@@ -33,7 +33,9 @@
 #define DHTType DHT22
 DHT dht(DHT22Pin, DHTType, DHT22);
 Servo doorServo;
-
+unsigned long previousMillis = millis();
+/// @brief 
+const long interval;
 // #define screen_width 128
 // #define screen_height 64
 // #define oled_reset -1
@@ -78,8 +80,8 @@ void setRGBColor(int red, int green, int blue) {
 // }
 void controlLEDs() {
 unsigned long currentMillis = millis();
-unsigned long previousMillis = millis();
-int interval;
+
+
 
 if (digitalRead(Button1Pin) == LOW) { // Button 1 is pressed
     setRGBColor(255, 0, 0);  // Red
@@ -94,23 +96,15 @@ if (digitalRead(Button1Pin) == LOW) { // Button 1 is pressed
     Serial.println("Button 3 is pressed");
     previousMillis = currentMillis;
   } else {
-    if (currentMillis - previousMillis >= interval) {
+    if (currentMillis - previousMillis > interval) {
       turnOffRGB();
     }
   }
 }
 
-void setRGBColor(int red, int green, int blue) {
-  analogWrite(RedPin, red);
-  analogWrite(GreenPin, green);
-  analogWrite(BluePin, blue);
-}
 
-void turnOffRGB() {
-  setRGBColor(0, 0, 0);  // Turn off the RGB LED
-}
-// In this code, we use millis() to manage the timing for turning off the RGB LED after a button press. This allows the LED to stay on for a defined duration (in this case, 1 second) before turning off. This way, you can handle button presses and LED control without blocking the loop.    
-    
+
+
      // what i want to do is configure a 4th pressbutton to be the sole button which turns off the RGB LEDS 
 // Function to read temperature and humidity from DHT22 sensor it currently print the temperature and humidity successfully in the serial monitor 
 void readDHT() {
