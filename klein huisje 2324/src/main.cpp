@@ -5,7 +5,7 @@
 #include <U8g2lib.h>
 #include <floatToString.h>
 #include <monitor_printf.h>
-#include <Buzzer.h>
+// #include <Buzzer.h>
 #include <Adafruit_I2CDevice.h>
 
 
@@ -31,7 +31,7 @@ U8G2_SSD1306_128X64_NONAME_F_SW_I2C u8g2(U8G2_R0, /* clock=*/ SCL, /* data=*/ SD
 #define Button2Pin 5
 #define Button3Pin 4
 
-Buzzer buzzer(1,13);
+// Buzzer buzzer(1,13);
 // Define pin for PIR motion sensor
 #define PIRPin 8
 // Define pin for buzzer
@@ -123,26 +123,36 @@ void readDHT() {
     Serial.print(" %, Temp: ");
     Serial.print(temperature);
     Serial.println(" Celsius");
+        u8g2.clearBuffer();                   // clear the internal memory
+  u8g2.setFont(u8g2_font_princess_te);  
+  u8g2.setFont(u8g_font_helvB08);
+  u8g2.setFont(u8g_font_4x6); // choose a suitable font
+  u8g2.setCursor(0,100);
+  u8g2.print(humidity);
+  u8g2.print(temperature);
+ // write something to the internal memory
+  u8g2.sendBuffer();                    // transfer internal memory to the display
+  delay(100); 
     
    
   } 
-  void printTemperatureONscreen() {
+  // void printTemperatureONscreen() {
     
-     u8g2.clearBuffer();                   // clear the internal memory
-  u8g2.setFont(u8g2_font_princess_te);  
-  u8g2.setFont(u8g_font_helvB08);
-  u8g2.setFont(u8g_font_4x6);
-  // u8g2.drawStr(dht.readHumidity(),dht.readTemperature(),); // choose a suitable font
-  u8g2.drawStr(0,11,"the quick brown fox jumps");    // write something to the internal memory
-    u8g2.drawStr(0,25, "over the lazy dog ");
+  //    u8g2.clearBuffer();                   // clear the internal memory
+  // u8g2.setFont(u8g2_font_princess_te);  
+  // u8g2.setFont(u8g_font_helvB08);
+  // u8g2.setFont(u8g_font_4x6);
+  // // u8g2.drawStr(dht.readHumidity(),dht.readTemperature(),); // choose a suitable font
+  // u8g2.drawStr(0,11,"the quick brown fox jumps");    // write something to the internal memory
+  //   u8g2.drawStr(0,25, "over the lazy dog ");
 
   
     
-      // write something to the internal memory
-  u8g2.sendBuffer();                    // transfer internal memory to the display
-  delay(100);  
+  //     // write something to the internal memory
+  // u8g2.sendBuffer();                    // transfer internal memory to the display
+  // delay(100);  
 
-  }
+  // }
 
 // Function to control the servo motor based on PIR motion sensor
 void controlServo() {
@@ -155,17 +165,17 @@ void controlServo() {
         doorServo.write(0);
     }
 }
-void verassingingslied() {
-  int time = 500;
-  buzzer.sound(NOTE_B4, time / 2);
-  buzzer.sound(NOTE_A4, time / 2);
-  buzzer.sound(NOTE_E5, time / 2);
-  buzzer.sound(NOTE_G2, time / 2);
-  buzzer.sound(NOTE_F3, time / 2);
-  buzzer.sound(NOTE_GS3, time / 2);
-  buzzer.sound(NOTE_B4, time / 2);
-  buzzer.sound(NOTE_D5, time / 2);
-}
+// void verassingingslied() {
+//   int time = 500;
+//   buzzer.sound(NOTE_B4, time / 2);
+//   buzzer.sound(NOTE_A4, time / 2);
+//   buzzer.sound(NOTE_E5, time / 2);
+//   buzzer.sound(NOTE_G2, time / 2);
+//   buzzer.sound(NOTE_F3, time / 2);
+//   buzzer.sound(NOTE_GS3, time / 2);
+//   buzzer.sound(NOTE_B4, time / 2);
+//   buzzer.sound(NOTE_D5, time / 2);
+// }
 
 void setup() {
     // Initialize pins and sensors
@@ -182,8 +192,8 @@ void setup() {
     u8g2.begin(); //
     dht.begin();
     Serial.begin(9600);
-    // Wire.begin();
-    buzzer.begin(10);
+    Wire.begin();
+    // buzzer.begin(10);
 }
 
 void loop() {
@@ -191,7 +201,7 @@ void loop() {
     controlLEDs();
     readDHT();
     controlServo();
-    verassingingslied();
+    // verassingingslied();
 }
 
 
